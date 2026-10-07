@@ -47,7 +47,7 @@ function acceptPhoto(file) {
   dropzone.classList.add("has-photo");
   dropzone.querySelector("img").src = photoUrl;
   document.querySelector("#photo-label").textContent = file.name;
-  reference = `SW-${Date.now().toString(36).toUpperCase()}`;
+  reference = `CF-${Date.now().toString(36).toUpperCase()}`;
   const type = suggestType(file.name);
   if (type) document.querySelector("#issue-type").value = type;
   document.querySelector("#analysis-note").textContent = type
@@ -79,7 +79,7 @@ function updateReport() {
 function reportText() {
   const issue = document.querySelector("#issue-type");
   return [
-    "Street issue report",
+    "CityFix street issue report",
     `Reference: ${reference}`,
     `Type: ${issue.options[issue.selectedIndex].text}`,
     `Severity: ${severity}/5`,
@@ -137,6 +137,7 @@ document.querySelector("#copy-report").addEventListener("click", async () => {
   }
 });
 document.querySelector("#download-report").addEventListener("click", () => {
+  const authorityUrl = "https://www.shjmun.gov.ae/";
   const blob = new Blob([reportText()], { type: "text/plain;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
@@ -144,6 +145,7 @@ document.querySelector("#download-report").addEventListener("click", () => {
   link.click();
   URL.revokeObjectURL(link.href);
   showToast("Report downloaded.");
+  setTimeout(() => window.location.assign(authorityUrl), 1000);
 });
 
 updateReport();
